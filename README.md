@@ -1,110 +1,103 @@
-# 🎵 ZENA (디스코드 음악 봇) — Shoukaku v4 & Lavalink 기반
+# ZENA (디스코드 음악 봇)
 
-> Discord.js v14와 Shoukaku v4, Lavalink v4를 이용해 제작된 디스코드 음악 봇
-> **라이선스:** 비상업적 사용만 가능, 수정본 배포 금지, 원작자 표기 필수 — `LICENSE` 참조
-
----
-
-## ✨ 주요 기능
-
-* 디스코드 슬래시 명령어 지원 (봇 시작 시 자동 등록)
-* Lavalink 기반 음악 재생 (재생, 일시정지, 스킵, 반복, 중지 등)
-* 간단한 대기열/플레이어 관리 (`src/music/manager.js`)
-* Shoukaku 이벤트/프로세스 에러 처리 안전망
-* 모듈화된 구조 (`src/index.js`, `src/music/*`, `src/lib/*`, `src/config/*`)
+Discord.js v14 + Shoukaku v4 + Lavalink v4 기반의 음악 봇입니다.  
+**라이선스:** 비상업적 사용만 가능, 수정본 배포 금지, 원작자 salmoon_77 표기 필수 — `LICENSE` 참고
 
 ---
 
-## ⚠️ 보안 주의사항
+## 주요 기능
 
-* **절대 비밀값(.env)을 깃허브 등 공개 저장소에 올리지 마세요.**
-* 토큰이나 DB URL이 유출되면 **즉시 재발급/회수** 하세요:
-
-  * Discord: Developer Portal → Bot → Reset Token
-  * MongoDB Atlas: 비밀번호 변경 또는 사용자 재생성
-* `.gitignore`에 `.env` 추가:
-
-  ```gitignore
-  .env
-  ```
+- 디스코드 **슬래시 명령어** 지원(봇 시작 시 자동 등록)
+- **Lavalink** 기반 음악 재생(재생/일시정지/스킵/반복/중지 등 — 구현한 명령어에 따라 다름)
+- 간단한 **대기열/플레이어 관리** (`src/music/manager.js`)
+- Shoukaku 이벤트 및 프로세스 에러에 대한 **안전망**
 
 ---
 
-## ✅ 사전 준비물
+## 보안 주의사항
 
-* **Node.js**: v20 이상 권장
-* **Java**: 17 이상 (예: Temurin 17/21) — Lavalink 실행용
-* **Git**
-* **Discord 애플리케이션 & 봇** (OAuth2 스코프: `bot`, `applications.commands`)
-* **필수 봇 권한**: Connect, Speak, Send Messages, Embed Links, Use Slash Commands
-
----
-
-## 🔧 디스코드 봇 생성 및 설정
-
-1. [Discord Developer Portal](https://discord.com/developers/applications) → 애플리케이션 생성
-2. **Bot** 탭에서 봇 계정 생성
-3. **Bot Token** 발급 후 `.env`에 저장
-4. **OAuth2 → URL Generator**
-
-   * Scopes: `bot`, `applications.commands`
-   * 권한: Connect, Speak, Send Messages, Embed Links
-   * URL로 서버에 봇 초대
-5. **Application(Client) ID** 복사
-6. **Server(Guild) ID** 복사 (개발자 모드 → 서버 우클릭 → ID 복사)
+- `.env` 파일에 **비밀값(토큰/DB URL 등)** 을 넣고, 저장소에 절대 커밋하지 마세요.
+- 유출되었다면 즉시 **회수/재발급(rotate)** 하세요.
+  - Discord: Developer Portal → Bot → **Reset Token**
+  - MongoDB Atlas: 사용자 비밀번호 변경 또는 사용자 재생성
+- `.gitignore` 예시:
+```gitignore
+.env
+```
 
 ---
 
-## 📦 설치 방법
+## 사전 준비물
+
+- **Node.js**: v20 이상 권장
+- **Java**: 17 이상(예: Temurin 17/21) — **Lavalink v4** 실행
+- **Git**
+- **Discord 애플리케이션 & 봇** (OAuth2 스코프: `bot`, `applications.commands`)
+- **필수 권한**: Connect, Speak, Send Messages, Embed Links, Use Slash Commands
+
+---
+
+## 디스코드 봇 생성/초대
+
+1. Discord Developer Portal → 애플리케이션 생성
+2. **Bot** 탭에서 봇 생성, **토큰** 발급
+3. **OAuth2 → URL Generator**
+   - Scopes: `bot`, `applications.commands`
+   - Bot Permissions: Connect, Speak, Send Messages, Embed Links
+   - 생성된 URL로 서버에 초대
+4. **Application(Client) ID**, **Guild(서버) ID** 복사
+
+---
+
+## 설치
 
 ```bash
-# 1) 저장소 클론
+# 저장소 클론
 git clone <repo-url> muse
 cd muse
 
-# 2) 패키지 설치
+# 패키지 설치
 npm i
 ```
 
-필요 패키지:
-
+필요 패키지(없으면 설치):
 ```bash
 npm i discord.js dotenv shoukaku
 ```
 
 ---
 
-## 🔐 환경변수 설정 (`.env`)
+## 환경 변수 설정 (`.env`)
 
-프로젝트 루트에 `.env` 파일 생성:
+프로젝트 루트에 `.env` 파일을 만들고 값을 채웁니다.  
+> 현재 `src/index.js`에서 `TOKEN`과 `DISCORD_TOKEN`을 모두 사용하므로 **두 값에 동일한 봇 토큰**을 넣으세요.
 
 ```env
 # 디스코드 봇
-DISCORD_TOKEN=봇_토큰
-DISCORD_CLIENT_ID=애플리케이션_ID
-GUILD_ID=서버_ID
+TOKEN=YOUR_DISCORD_BOT_TOKEN
+DISCORD_TOKEN=YOUR_DISCORD_BOT_TOKEN
+DISCORD_CLIENT_ID=YOUR_DISCORD_APPLICATION_CLIENT_ID
+GUILD_ID=YOUR_GUILD_ID
 
 # Lavalink
 LAVALINK_HOST=localhost
 LAVALINK_PORT=2333
-LAVALINK_PASSWORD=helloworld
+LAVALINK_PASSWORD=youshallnotpass
 LAVALINK_SECURE=false
 
-# MongoDB (선택)
+# MongoDB (선택 — 사용하는 명령어가 있을 때만 필요)
 MONGO_URL=mongodb+srv://<user>:<password>@<cluster>/<db>?retryWrites=true&w=majority
 ```
 
-> 현재 코드(`src/index.js`)는 `TOKEN`과 `DISCORD_TOKEN`을 동시에 사용하므로 **두 변수에 동일한 토큰**을 넣으세요. (추후 하나로 통일 가능)
-
 ---
 
-## 🎼 Lavalink v4 설정
+## Lavalink 설정 (`application.yml`)
 
-1. [Lavalink v4 다운로드](https://github.com/freyacodes/Lavalink/releases)
-2. Jar 파일 옆에 `application.yml` 생성:
+Lavalink 실행 폴더에 `application.yml` 파일을 만들고 아래 내용을 그대로 넣습니다(YouTube 플러그인 사용 예시).  
+`password`는 `.env`의 `LAVALINK_PASSWORD`와 동일해야 합니다.
 
-   ```yaml
-  server:
+```yaml
+server:
   port: 2333
   address: 0.0.0.0
 
@@ -137,17 +130,17 @@ plugins:
     allowDirectVideoIds: true
     allowDirectPlaylistIds: true
 
-    # ✅ 쿠키 인증 
+    # 쿠키 인증
     cookiePath: "./cookies.txt"
 
-    # ✅ 우선 사용할 안전한 클라이언트 (Opus 제공)
+    # 권장 클라이언트(안정적)
     clients:
       - WEB
       - MWEB
       - WEBEMBEDDED
       - MUSIC
 
-    # ✅ 문제성 클라이언트 차단 (로그인 제한/연령제 등 회피)
+    # 문제성 클라이언트 차단
     clientOptions:
       ANDROID: { playback: false, videoLoading: false, searching: false }
       ANDROID_MUSIC: { playback: false, videoLoading: false, searching: false }
@@ -159,29 +152,26 @@ plugins:
 # ipRotator:
 #   blockSources: [ "youtube.com", "googlevideo.com" ]
 #   strategy: "LoadBalance"
+```
 
-   ```
-3. 실행:
-
-   ```bash
-   java -jar Lavalink.jar
-   ```
+Lavalink 실행:
+```bash
+java -jar Lavalink.jar
+```
 
 ---
 
-## ▶️ 봇 실행하기
+## 실행
 
-1. 먼저 Lavalink 실행
-2. 다른 터미널에서 봇 실행:
+Lavalink를 먼저 실행한 뒤, 새 터미널에서 봇을 실행합니다.
 
-   ```bash
-   node src/index.js
-   ```
-
-실행 로그 예시:
-
+```bash
+node src/index.js
 ```
-✅ Logged in as Muse#1234
+
+정상 출력 예시:
+```
+✅ Logged in as <봇이름>#1234
 ⏳ Registering slash commands...
 ✅ Slash commands registered!
 [Shoukaku] node=main ready (resumed=false)
@@ -189,25 +179,34 @@ plugins:
 
 ---
 
-## 🔒 라이선스
+## 문제 해결
 
-* **상업적 사용 금지**
-* **코드 수정 가능**, 단 **수정본 배포 금지**
-* **원작자 표기 필수**: salmoon\_77
-* 자세한 내용은 [`LICENSE`](LICENSE) 참조
-
----
-
-## 🤝 기여
-
-* 버그 수정, 문서 개선 등 PR 환영
-* 단, 수정본의 외부 배포는 금지
+- **401 Unauthorized (Shoukaku)**: Lavalink 비밀번호/호스트/포트/보안(ws/wss) 불일치 여부 확인
+- **노드 없음**: Lavalink 가동 상태/방화벽/포트 개방 확인
+- **슬래시 명령어 미표시**: `GUILD_ID`, 초대 스코프(`applications.commands`), “Slash commands registered!” 로그 확인
+- **소리 안 남**: 소스 매니저 설정, 채널 권한(Speak), 서버 음소거/권한 확인, 검색 쿼리 형식(URL 또는 `ytsearch:`)
 
 ---
 
-## 📫 문의
+## 라이선스
 
-* 실행 오류 시 로그와 환경(Node, Java 버전 등)을 첨부해 이슈 등록
+- **상업적 사용 금지**
+- **코드 수정 가능**, 단 **수정본(2차 저작물) 배포 불가**
+- **원작자 표기 필수**: `salmoon_77`
+- 전문은 `LICENSE` 파일을 참조하세요.
 
 ---
+
+## 기여
+
+원본 저장소에 대한 PR(버그 수정, 문서 개선 등)은 환영합니다.  
+단, 수정본의 **외부 재배포는 금지**됩니다.
+
+---
+
+## 문의
+
+이슈 등록 시 로그와 환경(Node.js/Java 버전), 재현 절차를 함께 남겨주세요.
+또는, 디스코드 서버에서 문의를 남겨주세요.
+https://discord.gg/RfGwkc6tAE
 
