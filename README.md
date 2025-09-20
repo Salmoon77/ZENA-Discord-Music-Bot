@@ -80,7 +80,6 @@ npm i discord.js dotenv shoukaku
 
 ```env
 # 디스코드 봇
-TOKEN=봇_토큰
 DISCORD_TOKEN=봇_토큰
 DISCORD_CLIENT_ID=애플리케이션_ID
 GUILD_ID=서버_ID
@@ -105,20 +104,62 @@ MONGO_URL=mongodb+srv://<user>:<password>@<cluster>/<db>?retryWrites=true&w=majo
 2. Jar 파일 옆에 `application.yml` 생성:
 
    ```yaml
-   server:
-     port: 2333
-   lavalink:
-     server:
-       password: "helloworld"
-       sources:
-         youtube: true
-         bandcamp: true
-         soundcloud: true
-         http: true
-         local: false
-   logging:
-     file:
-       path: ./logs/
+  server:
+  port: 2333
+  address: 0.0.0.0
+
+lavalink:
+  server:
+    password: "youshallnotpass"   # 봇 쪽과 맞추기
+    sources:
+      youtube: false         # 기본 내장 소스 끄기 (plugin만 사용)
+      soundcloud: false
+      bandcamp: false
+      vimeo: false
+      twitch: false
+      http: false
+      local: false
+
+  plugins:
+    - dependency: "dev.lavalink.youtube:youtube-plugin:1.13.5"
+      repository: "https://maven.lavalink.dev/releases"
+
+logging:
+  level:
+    root: INFO
+    lavalink: INFO
+    dev.lavalink.youtube: DEBUG   # 쿠키/클라이언트 관련 로그 자세히 확인 가능
+
+plugins:
+  youtube:
+    enabled: true
+    allowSearch: true
+    allowDirectVideoIds: true
+    allowDirectPlaylistIds: true
+
+    # ✅ 쿠키 인증 
+    cookiePath: "./cookies.txt"
+
+    # ✅ 우선 사용할 안전한 클라이언트 (Opus 제공)
+    clients:
+      - WEB
+      - MWEB
+      - WEBEMBEDDED
+      - MUSIC
+
+    # ✅ 문제성 클라이언트 차단 (로그인 제한/연령제 등 회피)
+    clientOptions:
+      ANDROID: { playback: false, videoLoading: false, searching: false }
+      ANDROID_MUSIC: { playback: false, videoLoading: false, searching: false }
+      ANDROID_VR: { playback: false, videoLoading: false, searching: false }
+      TV: { playback: false }
+      TVHTML5EMBEDDED: { playback: false }
+
+# 선택: 라우트 플래너 (IP 회전이 필요할 경우)
+# ipRotator:
+#   blockSources: [ "youtube.com", "googlevideo.com" ]
+#   strategy: "LoadBalance"
+
    ```
 3. 실행:
 
