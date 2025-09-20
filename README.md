@@ -53,16 +53,11 @@ Discord.js v14 + Shoukaku v4 + Lavalink v4 기반의 음악 봇입니다.
 
 ```bash
 # 저장소 클론
-git clone <repo-url> muse
+git clone https://github.com/Salmoon77/ZENA-Discord-Music-Bot.git
 cd muse
 
 # 패키지 설치
 npm i
-```
-
-필요 패키지(없으면 설치):
-```bash
-npm i discord.js dotenv shoukaku
 ```
 
 ---
