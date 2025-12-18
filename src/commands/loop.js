@@ -1,6 +1,8 @@
+// src/commands/repeat.js
 import { SlashCommandBuilder, EmbedBuilder } from "discord.js";
 import { ensureInVoice } from "../lib/_util.js";
 import { ensureGuildQueue } from "../music/manager.js";
+import { updateMusicEmbed } from "../lib/updateMusicEmbed.js"; // ✅ 추가
 
 export const data = new SlashCommandBuilder()
   .setName("반복")
@@ -29,10 +31,12 @@ export async function execute(interaction) {
 
   // ✅ Embed UI
   const embed = new EmbedBuilder()
-    .setColor("#000000")
     .setTitle("🔁 반복 모드 변경")
     .setDescription(`현재 반복 모드가 \`${mode}\` 로 설정되었습니다.`)
     .setFooter({ text: "© 2024. Team.VITA, All rights reserved." });
 
   await interaction.reply({ embeds: [embed] });
+
+  // 🚨 뮤직채널 임베드 즉시 갱신
+  await updateMusicEmbed(interaction.client, interaction.guildId);
 }

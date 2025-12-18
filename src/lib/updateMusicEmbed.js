@@ -32,7 +32,7 @@ export async function updateMusicEmbed(client, guildId) {
       .setDescription("현재 재생 중인 노래가 없습니다.")
       .setThumbnail(`https://cdn.discordapp.com/attachments/1294501229258346550/1418944488889651240/d09d2648db99f46d197bfc4dbc265a95.jpg?ex=68cff688&is=68cea508&hm=3ece02731fcf3aebb67fd1bed19a8e7dd9ab08f303a2d097a13727e0e52bd095&`)
       .addFields({ name: `\`\`\`서포트서버\`\`\``, value: `🏠 [초대링크](https://discord.gg/RfGwkc6tAE)`, inline: true })
-      .addFields({ name: `\`\`\`한디리\`\`\``, value: `♥️ [하트](https://koreanbots.dev/bots/1274377980080164920)`, inline: true })
+      .addFields({ name: `\`\`\`한디리\`\`\``, value: `♥️ [하트](https://koreanbots.dev/bots/1335614699064262666)`, inline: true })
       .setFooter({ text: "© 2024. Team.VITA, All rights reserved." });
     await message.edit({ embeds: [embed], components: [] });
   } else {

@@ -1,5 +1,7 @@
+// src/commands/shuffle.js
 import { SlashCommandBuilder, EmbedBuilder } from "discord.js";
 import { getQueue } from "../music/manager.js";
+import { updateMusicEmbed } from "../lib/updateMusicEmbed.js"; // ✅ 추가
 
 export const data = new SlashCommandBuilder()
   .setName("셔플")
@@ -24,10 +26,12 @@ export async function execute(interaction) {
 
   // ✅ Embed UI
   const embed = new EmbedBuilder()
-    .setColor("#000000")
     .setTitle("🔀 대기열 셔플")
     .setDescription(`대기열의 **${queue.tracks.length}곡**이 무작위로 섞였습니다.`)
     .setFooter({ text: "© 2024. Team.VITA, All rights reserved." });
+
+  // 🚨 뮤직채널 임베드 즉시 갱신
+  await updateMusicEmbed(interaction.client, guildId);
 
   return interaction.reply({ embeds: [embed] });
 }

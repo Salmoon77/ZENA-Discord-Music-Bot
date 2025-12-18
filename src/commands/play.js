@@ -111,7 +111,6 @@ export async function execute(interaction) {
   const top = tracks.slice(0, 10);
 
   const embed = new EmbedBuilder()
-    .setColor("#000000")
     .setTitle("🔎 검색 결과")
     .setDescription(
       top

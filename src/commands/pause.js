@@ -17,7 +17,6 @@ export async function execute(interaction) {
 
   // ✅ Embed UI
   const embed = new EmbedBuilder()
-    .setColor("#000000")
     .setTitle("⏯️ 일시정지 / 재개")
     .setDescription(result) // "▶️ 재생을 다시 시작했습니다." or "⏸️ 음악을 일시정지했습니다."
     .setFooter({ text: "© 2024. Team.VITA, All rights reserved." });

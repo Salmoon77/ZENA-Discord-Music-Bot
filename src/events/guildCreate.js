@@ -1,5 +1,5 @@
 // src/events/guildCreate.js
-import { EmbedBuilder, ChannelType, PermissionFlagsBits } from "discord.js";
+import { EmbedBuilder, ChannelType, PermissionFlagsBits, WebhookClient } from "discord.js";
 
 export const name = "guildCreate"; // 이벤트 이름
 export const once = false;         // 여러 번 실행 가능

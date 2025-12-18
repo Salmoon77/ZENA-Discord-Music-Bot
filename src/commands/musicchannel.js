@@ -41,7 +41,6 @@ export async function execute(interaction) {
   });
 
   const embed = new EmbedBuilder()
-    .setColor("#000000")
     .setTitle("🎵 뮤직 채널 부팅중..")
     .setDescription("노래 제목 입력시 작동됩니다..!");
 

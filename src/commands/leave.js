@@ -2,6 +2,7 @@
 import { SlashCommandBuilder, EmbedBuilder } from "discord.js";
 import { ensureGuildQueue, musicManager } from "../music/manager.js";
 import { getShoukaku } from "../index.js";
+import { updateMusicEmbed } from "../lib/updateMusicEmbed.js"; // ✅ 추가
 
 export const data = new SlashCommandBuilder()
   .setName("나가기")
@@ -27,9 +28,11 @@ export async function execute(interaction) {
     queue.playing = false;
     musicManager.delete(guildId);
 
+    // 뮤직채널 UI 갱신
+    await updateMusicEmbed(interaction.client, guildId);
+
     // Embed UI
     const embed = new EmbedBuilder()
-      .setColor("#000000")
       .setTitle("👋 음성 채널 퇴장")
       .setDescription("봇이 음성 채널에서 퇴장했습니다.")
       .setFooter({ text: "© 2024. Team.VITA, All rights reserved." });

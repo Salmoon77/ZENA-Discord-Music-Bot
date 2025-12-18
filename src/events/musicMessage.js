@@ -1,9 +1,10 @@
-import { Events } from "discord.js";
+import { Events, EmbedBuilder } from "discord.js";
 import MusicChannel from "../models/Musicchannel.js";
-import { resolveTracks, ensureGuildQueue, playNext, connectToChannel } from "../music/manager.js";
+import { resolveTracks, ensureGuildQueue, playNext, connectToChannel, clearIdleNotices } from "../music/manager.js";
 import { getShoukaku, client } from "../index.js";
 import { updateMusicEmbed } from "../lib/updateMusicEmbed.js";
-import { clearIdleNotices } from "../music/manager.js";
+
+const logChannelId = "1414249126954012742";
 
 export const name = Events.MessageCreate;
 export const once = false;
@@ -16,6 +17,19 @@ export async function execute(message) {
 
   const query = message.content.trim();
   if (!query) return;
+
+  // ✅ 입력 로그 채널에 기록
+  const logEmbed = new EmbedBuilder()
+    .setColor("#3498db")
+    .setTitle("🎵 뮤직 채널 입력 로그")
+    .setDescription(
+      `👤 사용자: ${message.author.tag} (${message.author.id})\n` +
+      `💬 입력 내용: \`${query}\`\n` +
+      `📺 채널: <#${message.channel.id}>`
+    )
+    .setTimestamp();
+
+  client.channels.cache.get(logChannelId)?.send({ embeds: [logEmbed] });
 
   const guildId = message.guild.id;
   const queue = ensureGuildQueue(guildId);
